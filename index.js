@@ -36,7 +36,7 @@ function authenticateToken(req, res, next) {
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
-    return res.status(400).send("Name, email, and password are required!");
+    return res.status(400).send("Name, email, and password are required");
   }
 
   const hashedPassword = await bcrypt.hash(password, 8);
@@ -60,7 +60,7 @@ app.post("/register", async (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).send("Email and password are required!");
+    return res.status(400).send("Email and password are required");
   }
 
   db.get(
@@ -147,7 +147,7 @@ app.delete("/channels/:channel_id", authenticateToken, (req, res) => {
 
   db.get(`SELECT * FROM users WHERE email = ?`, [user_email], (error, user) => {
     if (error) {
-      console.error("Error verifying user:", error.message);
+      console.error("Error:", error.message);
       return res.status(500).send("Error verifying user");
     }
     if (!user) {
@@ -343,7 +343,7 @@ app.post("/channels/:channel_id/messages", authenticateToken, (req, res) => {
                 [content, user.id, channel_id],
                 function (error) {
                   if (error) {
-                    console.error("Error", error.message);
+                    console.error("Error:", error.message);
                     return res.status(500).send("Failed to post message");
                   }
                   res.send({
@@ -382,7 +382,7 @@ app.get("/channels/:channel_id/messages", authenticateToken, (req, res) => {
       [channel_id],
       (error, channel) => {
         if (error) {
-          console.error("Error", error.message);
+          console.error("Error:", error.message);
           return res.status(500).send("Error checking channel");
         }
         if (!channel) {
